@@ -1,0 +1,146 @@
+/**
+ * Memory operations library.
+ */ 
+class Memory {
+    static Array ram;
+    static Array heap;
+    static Array freeList;
+
+    //static int heapTop = 2048;
+    //static int heapBottom = 16384;
+    
+    /** Initializes memory parameters. */
+    function void init() {
+        let ram = 0;
+        
+        // set heap and free list to 2048 (heap top)
+        let heap = 2048;
+        let freeList = 2048;
+        
+        // initial values
+        let freeList[0] = 0;  // no next block at start
+        let freeList[1] = 14335; // initial block length, 16384 - 2048 - 1
+        
+        return;
+    }
+
+    /** Returns the value of the main memory at the given address. */
+    function int peek(int address) {
+        return ram[address];
+    }
+
+    /** Sets the value of the main memory at this address
+     *  to the given value. */
+    function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
+    }
+
+    /** finds and allocates from the heap a memory block of the 
+     *  specified size and returns a reference to its base address. */
+    function int _alloc(int size) {
+        var int curr, next, len;
+        let curr = freeList;
+        
+        // iterate through all blocks
+        while (~(curr = 0))
+        {
+            // next free block
+            let next = ram[curr];
+            
+            // length of current block
+            let len = ram[curr + 1];
+            
+            // check if current block is large enough
+            if (~(len < size + 1)) // len >= size + 1
+            {
+                // the block is large enough, use it (first fit) 
+                
+                // update length of old block
+                let ram[curr + 1] = len - size - 1;
+                
+                // start of the new segment
+                let curr = curr + len - size + 1;
+                
+                // set the new size
+                let ram[curr] = size;
+                
+                // return 
+                return curr + 1;
+            }            
+            
+            let curr = next;
+        }
+        return freeList;
+    }
+
+    function int alloc(int size) {
+        var int res;
+        
+        let res = Memory._alloc(size);
+        if (res = freeList) {
+            do Memory.defrag();
+            return Memory._alloc(size);
+        }
+        
+        return res;
+    }    
+    
+    /** De-allocates the given object and frees its space. */
+    function void deAlloc(int object) {
+        var Array o;
+        var int size, curr;
+        
+        let o = object;
+        
+        // go back one place
+        let curr = o - 1;
+        
+        // read block size
+        let size = ram[curr];
+        
+        // set next free block
+        let ram[curr] = freeList;
+        
+        // set the size of the newly freed block
+        let ram[curr + 1] = size - 1;
+        
+        // move pointer 
+        let freeList = curr;
+        
+        return;
+    }
+
+    /* Copies the values of d bytes from src to dst. */
+    function int memcpy(int src, int dst, int d) {
+        var int i;
+        
+        let i = 0;
+        while (i < d) {
+            let ram[dst+i] = ram[src+i];
+            let i = i + 1;
+        }
+        
+        return dst;
+    }
+
+    /* Defragments the memory. */
+    function void defrag() {
+        var int curr, next;
+        
+        let curr = freeList;
+        let next = ram[curr];
+        while (~(next=0)) {
+            if (next = (curr + ram[curr+1] + 2)) {
+                let ram[curr] = ram[next];
+                let ram[curr+1] = ram[curr+1] + ram[next+1] + 2;
+            } else {
+                let curr = next;
+            }
+            
+            let next = ram[curr];
+        }
+        
+        return;
+    }
+}

@@ -1,0 +1,166 @@
+class Math
+{
+    static Array twoToThe;
+    
+    function void init()
+    {
+        var int i, pow;
+        let twoToThe = Array.new(16);
+        
+        let pow = 1;
+        while (i < 16)
+        {
+            let twoToThe[i] = pow;
+            let pow = pow + pow;
+            let i = i + 1;
+        } 
+        return;
+    }
+    
+    function int multiply(int x, int y)
+    {
+        var int sum, shifted, i;
+        let shifted = x;
+        
+        while (i < 16)
+        {
+            if (twoToThe[i] & y)
+            {
+                let sum = sum + shifted;
+            }
+            let shifted = shifted + shifted;
+            let i = i + 1;
+        }
+        
+        return sum;
+    }
+
+    /** a*/
+    function int divide(int x, int y) {
+        var int quotient, result;
+        var boolean isPositive;
+
+        let isPositive = ((x < 0) = (y < 0));
+
+        let x = Math.abs(x);
+        let y = Math.abs(y);
+
+        if(y > x){
+            return 0;
+        }
+
+        let quotient = Math.divide(x,y + y);
+        
+        if((x - (2 * quotient * y)) < y){
+            let result = quotient + quotient;
+        }else{
+            let result = quotient + quotient + 1;
+        }
+
+        if(isPositive){
+            return result;
+        }else{
+            return -result;
+        }
+    }
+    
+    function int sqrt(int x)
+    {
+        var int i, y, pow;
+        
+        if (x < 0)
+        {
+            return 0;
+        }
+        
+        let i = 7;
+        while (i > -1)
+        {
+            let pow = Math.multiply(y + twoToThe[i], y + twoToThe[i]);
+            if (pow < x)
+            {
+                let y = y + twoToThe[i];
+            }
+            let i = i - 1;
+        }
+        
+        return y;
+    }
+
+    
+    function int abs(int x)
+    {
+        if (x < 0)
+        {
+            return -x;
+        }
+        return x;
+    }
+    
+    function int min(int x, int y)
+    {
+        if (x < y)
+        {
+            return x;
+        }
+        return y;
+    }
+    
+    function int max(int x, int y)
+    {
+        if (x > y)
+        {
+            return x;
+        }
+        return y;
+    }
+    
+    /** b */
+    function int log(int x)
+    {
+        var int i;
+        if (x < 1)
+        {
+            return -1;
+        }
+        let i = 14;
+        while(~(i < 0)) // >= 0
+        {            
+            if (~(twoToThe[i] > x)) // <=
+            {
+                return i;
+            }
+            let i = i - 1;
+        }
+        return -1;
+    }
+
+    /** c */
+    function int mod(int x, int y) {
+        var int q;
+        
+        let q = Math.divide(x, y);
+        return x - Math.multiply(q,y);
+    }
+
+    function int pow(int base, int power)
+    {
+        var int r;
+        if (power = 0)
+        {
+            return 1;
+        }
+
+        if (base = 2){
+            return twoToThe[power];
+        }
+        
+        let r = Math.pow(base, Math.divide(power, 2));
+        let r = Math.multiply(r, r);
+        
+        if (Math.mod(power, 2) = 1){
+            return r * base;
+        }
+        return r;
+    }
+}

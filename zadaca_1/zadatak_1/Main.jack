@@ -1,0 +1,70 @@
+class Main
+{
+    function void main()
+    {
+        var int res;
+        
+        /** a */
+        let res = Math.divide(5, 3);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.divide(766, 31);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.divide(12345, 123);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.divide(5, 1);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.divide(1, 5);
+        do Output.printInt(res);
+        do Output.println();
+        
+        
+        /** b */    
+        let res = Math.log(8);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.log(10);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.log(66);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.log(178);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.log(10028);
+        do Output.printInt(res);
+        do Output.println();
+
+
+        /** c */    
+        let res = Math.pow(2, 5);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.pow(2, 14);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.pow(4, 7);
+        do Output.printInt(res);
+        do Output.println();
+
+        let res = Math.pow(1, 9);
+        do Output.printInt(res);
+        do Output.println();
+
+        return;
+    }
+}
