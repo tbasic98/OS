@@ -1,0 +1,9 @@
+class Main {
+    function void main() 
+    {
+        do Screen.drawCircle(100, 200, 35);
+        do Screen.drawCircle(400, 75, 15);
+        
+        return;
+    }
+}
