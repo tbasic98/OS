@@ -1,0 +1,118 @@
+class Tetris
+{
+    field int x, y, angle, blockSize, d, blockDistance;
+    
+    constructor Tetris new() {
+        let x = 512 / 2;
+        let y = 256 / 2;
+        let blockSize = 10;
+        let d = 3;
+        let angle = 0;
+        let blockDistance = blockSize + d;
+        do loop();
+        return this;
+    }
+
+    method void drawL1() {
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2), x + (blockSize/2), y + (blockSize/2)); // base
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2) - blockDistance, x + (blockSize/2), y + (blockSize/2) - blockDistance);
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2) - blockDistance - blockDistance, x + (blockSize/2), y + (blockSize/2) - blockDistance- blockDistance);
+        do Screen.drawRectangle(x - (blockSize/2) + blockDistance, y - (blockSize/2), x + (blockSize/2) + blockDistance, y + (blockSize/2));
+        return;   
+    }
+
+    method void drawL2() {
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2), x + (blockSize/2), y + (blockSize/2)); // base
+        do Screen.drawRectangle(x - (blockSize/2) + blockDistance, y - (blockSize/2), x + (blockSize/2) + blockDistance, y + (blockSize/2)); 
+        do Screen.drawRectangle(x - (blockSize/2) + blockDistance + blockDistance, y - (blockSize/2), x + (blockSize/2) + blockDistance + blockDistance, y + (blockSize/2));
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2) + blockDistance, x + (blockSize/2), y + (blockSize/2) + blockDistance);
+        return;   
+    }
+
+    method void drawL3() {
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2), x + (blockSize/2), y + (blockSize/2)); // base
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2) + blockDistance, x + (blockSize/2), y + (blockSize/2) + blockDistance);
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2) + blockDistance+ blockDistance, x + (blockSize/2), y + (blockSize/2) + blockDistance+ blockDistance);
+        do Screen.drawRectangle(x - (blockSize/2) - blockDistance, y - (blockSize/2), x + (blockSize/2) - blockDistance, y + (blockSize/2));
+        return;   
+    }
+
+    method void draw4() {
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2), x + (blockSize/2), y + (blockSize/2)); // base
+        do Screen.drawRectangle(x - (blockSize/2) - blockDistance, y - (blockSize/2), x + (blockSize/2) - blockDistance, y + (blockSize/2)); 
+        do Screen.drawRectangle(x - (blockSize/2) - blockDistance- blockDistance, y - (blockSize/2), x + (blockSize/2) - blockDistance- blockDistance, y + (blockSize/2));
+        do Screen.drawRectangle(x - (blockSize/2), y - (blockSize/2) - blockDistance, x + (blockSize/2), y + (blockSize/2) - blockDistance);
+        return;   
+        
+    }
+
+    method void loop () {
+        while (~(Keyboard.keyPressed() = 140)) 
+        {
+            if (Keyboard.keyPressed() = 130)  // go left
+            {
+                if ((x - blockDistance) > (3 * blockDistance)){
+                    let x = x - blockDistance;
+                    do Sys.wait(50);
+                }
+            }
+            if (Keyboard.keyPressed() = 132)  // go right
+            {
+                if ( (x + blockDistance) < (512 - (3 * blockDistance))){
+                    let x = x + blockDistance;
+                    do Sys.wait(50);
+                }
+            }
+            if (Keyboard.keyPressed() = 131) // go up
+            {
+                if ((y - blockDistance) > (3 * blockDistance)){
+                    let y = y - blockDistance;
+                    do Sys.wait(50);
+                }
+            }
+            if (Keyboard.keyPressed() = 133) // go down
+            {
+                if (y + blockDistance < (256 - (3 * blockDistance))){
+                    let y = y + blockDistance;
+                    do Sys.wait(50);
+                }
+            }
+            if ((Keyboard.keyPressed() = 82) | (Keyboard.keyPressed() = 114)) {
+                let angle = angle + 1;
+                if (angle = 4){
+                    let angle = 0;
+                }
+                do Sys.wait(50);
+            }
+            
+            do render();
+        }
+        do Sys.wait(1000);
+        do Screen.clearScreen();
+        return;
+    }
+
+    method void render()
+    {
+        do Screen.clearScreen();
+        if (angle = 0){
+            do drawL1();
+        }
+        if (angle = 1){
+            do drawL2();
+        }
+        if (angle = 2){
+            do drawL3();
+        }
+        if (angle = 4){
+            do drawL3();
+        }
+        do Sys.wait(50);
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}
